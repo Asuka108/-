@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AirPods AI Assistant</string>
+
+    <!-- Login -->
+    <string name="login_title">Sign in for smart support</string>
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_btn">Sign In</string>
+    <string name="login_no_account">No account? Register</string>
+    <string name="login_has_account">Have an account? Sign In</string>
+    <string name="login_register_btn">Register</string>
+    <string name="login_nickname_hint">Nickname (optional)</string>
+    <string name="login_register_password_hint">Set Password</string>
+
+    <!-- Errors -->
+    <string name="err_network">Network error. Check your connection.</string>
+    <string name="err_user_not_found">Account not found. Please register.</string>
+    <string name="err_wrong_password">Incorrect password</string>
+    <string name="err_username_taken">Username already taken</string>
+    <string name="err_login_failed">Operation failed. Please retry.</string>
+    <string name="err_username_empty">Please enter a username</string>
+    <string name="err_password_empty">Please enter a password</string>
+
+    <!-- Chat -->
+    <string name="chat_welcome">Hello! I\'m your AirPods AI Support Assistant\n\nI can help you with:\n• Connection and pairing issues\n• Sound quality and noise cancellation\n• Warranty and repair costs\n• Authenticity verification\n• Model comparison\n\nAsk me anything or tap a quick question below!</string>
+    <string name="chat_resume">Resumed: \"%s\"</string>
+    <string name="chat_resume_untitled">Resumed: \"Chat History\"</string>
+    <string name="chat_network_error">Network error. Please check your connection.</string>
+    <string name="chat_history_load_error">Failed to load history. Check your network.</string>
+    <string name="chat_server_error">I\'m temporarily unavailable. Please try again later.</string>
+    <string name="chat_input_hint">Ask me anything…</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_history">History</string>
+    <string name="chat_settings">Settings</string>
+    <string name="chat_new_conversation">New Chat</string>
+    <string name="chat_logout_confirm">Confirm Sign Out</string>
+    <string name="chat_logout_message">You will need to sign in again. Are you sure?</string>
+    <string name="chat_logout_yes">Sign Out</string>
+    <string name="chat_logout_cancel">Cancel</string>
+
+    <!-- Quick Questions -->
+    <string name="quick_q1">How to connect AirPods?</string>
+    <string name="quick_q2">Left earbud not working?</string>
+    <string name="quick_q3">What is the warranty?</string>
+    <string name="quick_q4">How to check authenticity?</string>
+    <string name="quick_q5">Battery drains too fast?</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_zh">中文</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_logout">Sign Out</string>
+    <string name="settings_lang_changed">Language changed. Restart app to apply.</string>
+    <string name="settings_about_header">About</string>
+    <string name="settings_app_name_label">App Name</string>
+    <string name="settings_version_label">Version</string>
+    <string name="settings_disclaimer">This app is for big data learning and technical research purposes only. No commercial use.</string>
+
+    <!-- History -->
+    <string name="history_title">Chat History</string>
+    <string name="history_back">← Back</string>
+    <string name="history_empty">No conversations yet.\nStart chatting to see them here.</string>
+    <string name="history_untitled">Untitled</string>
+
+    <!-- Admin -->
+    <string name="admin_title">Knowledge Base</string>
+</resources>

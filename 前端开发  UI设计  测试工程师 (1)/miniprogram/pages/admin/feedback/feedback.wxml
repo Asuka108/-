@@ -1,0 +1,26 @@
+<!-- 意见反馈页 -->
+<view class="feedback-page">
+  <view class="feedback-card">
+    <view class="feedback-label">您的意见</view>
+    <textarea
+      class="feedback-textarea"
+      placeholder="请输入您的意见或建议..."
+      placeholder-style="color:#8E8E93"
+      value="{{content}}"
+      bindinput="onInput"
+      maxlength="500"
+    />
+    <view class="feedback-count">{{content.length || 0}}/500</view>
+
+    <view class="feedback-label">联系方式（选填）</view>
+    <input
+      class="feedback-input"
+      placeholder="手机号或微信，方便我们联系您"
+      placeholder-style="color:#8E8E93"
+      value="{{contact}}"
+      bindinput="onContactInput"
+    />
+
+    <button class="feedback-submit" bindtap="submit">提交反馈</button>
+  </view>
+</view>

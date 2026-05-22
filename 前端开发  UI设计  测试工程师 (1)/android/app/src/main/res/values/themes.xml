@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pineapple Design System: #fbfbfd 底色, #0071e3 唯一强调色 -->
+    <style name="Theme.AirPods" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#0071e3</item>
+        <item name="colorPrimaryDark">#fbfbfd</item>
+        <item name="colorAccent">#0071e3</item>
+        <item name="android:windowBackground">#fbfbfd</item>
+        <item name="android:statusBarColor">#fbfbfd</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">#ffffff</item>
+        <item name="android:textColorPrimary">#1c1c1e</item>
+        <item name="android:textColorSecondary">#6e6e73</item>
+    </style>
+</resources>

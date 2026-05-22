@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pineapple iMessage 风格 — squircle 连续曲率圆角，左下角微调 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#f0f0f3" />
+    <corners android:radius="22dp" android:bottomLeftRadius="6dp" />
+</shape>

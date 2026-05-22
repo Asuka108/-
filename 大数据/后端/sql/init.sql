@@ -1,0 +1,54 @@
+-- 菠萝耳机售后机器人 数据库初始化脚本
+-- 开发环境：SQLite，部署环境：MySQL
+
+CREATE DATABASE IF NOT EXISTS after_sales_robot;
+USE after_sales_robot;
+
+-- 用户表
+CREATE TABLE IF NOT EXISTS users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(64) UNIQUE NOT NULL COMMENT '用户名',
+    nickname VARCHAR(64) COMMENT '昵称',
+    password_hash VARCHAR(128) COMMENT '密码哈希值',
+    avatar_url VARCHAR(256) COMMENT '头像URL',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+-- 对话表
+CREATE TABLE IF NOT EXISTS conversations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL COMMENT '所属用户ID',
+    title VARCHAR(128) DEFAULT '新对话' COMMENT '对话标题',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='对话表';
+
+-- 消息表
+CREATE TABLE IF NOT EXISTS messages (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    conversation_id INT NOT NULL COMMENT '所属对话ID',
+    role VARCHAR(16) NOT NULL COMMENT '角色：user或assistant',
+    content TEXT NOT NULL COMMENT '消息内容',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '发送时间',
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息表';
+
+-- 知识库表
+CREATE TABLE IF NOT EXISTS knowledge_base (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    category VARCHAR(32) NOT NULL COMMENT '分类',
+    question TEXT NOT NULL COMMENT '常见问题',
+    answer TEXT NOT NULL COMMENT '标准回答',
+    keywords VARCHAR(256) COMMENT '检索关键词（逗号分隔）',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='知识库表';
+
+-- 用户Token表（持久化登录状态）
+CREATE TABLE IF NOT EXISTS user_tokens (
+    token VARCHAR(128) PRIMARY KEY COMMENT '登录token',
+    user_id INT NOT NULL COMMENT '用户ID',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户Token表';

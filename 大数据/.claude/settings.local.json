@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c ' *)",
+      "Bash(pip install *)",
+      "Bash(python create_word.py)",
+      "Bash(python create_word_v2.py)"
+    ]
+  }
+}

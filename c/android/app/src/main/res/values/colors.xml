@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#007AFF</color>
+    <color name="colorPrimaryDark">#0056CC</color>
+    <color name="colorAccent">#007AFF</color>
+
+    <color name="pineappleBlue">#007AFF</color>
+    <color name="pineappleBackground">#F2F2F7</color>
+    <color name="pineappleCard">#FFFFFF</color>
+    <color name="pineappleText">#1C1C1E</color>
+    <color name="pineappleTextSecondary">#8E8E93</color>
+    <color name="pineappleSeparator">#C6C6C8</color>
+    <color name="pineappleAiBubble">#F1F1F2</color>
+    <color name="pineappleUserBubble">#007AFF</color>
+    <color name="pineappleError">#FF3B30</color>
+    <color name="pineappleSuccess">#34C759</color>
+    <color name="white">#FFFFFF</color>
+</resources>

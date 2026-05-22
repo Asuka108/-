@@ -1,0 +1,108 @@
+<!-- 菠萝蓝牙耳机售后AI聊天机器人 - 聊天页 -->
+<view class="chat-page">
+
+  <!-- 顶部导航栏 -->
+  <view class="chat-header">
+    <view class="header-spacer"></view>
+    <view class="header-title">菠萝耳机AI客服</view>
+    <view class="header-mine" bindtap="goToMine">
+      <text class="header-mine-icon">👤</text>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view
+    class="message-list"
+    scroll-y
+    scroll-into-view="{{scrollToId}}"
+    scroll-with-animation
+    enable-passive="true"
+  >
+    <!-- 欢迎消息（首次进入） -->
+    <view class="welcome-area" wx:if="{{messages.length === 0}}">
+      <view class="welcome-icon">🎧</view>
+      <view class="welcome-title">菠萝耳机AI客服</view>
+      <view class="welcome-subtitle">您好！我是菠萝蓝牙耳机售后助手</view>
+      <view class="welcome-tips">
+        您可以输入问题或点击下方快捷入口
+        我将帮您解决连接、续航、保修等问题
+      </view>
+    </view>
+
+    <!-- 消息列表 -->
+    <view
+      wx:for="{{messages}}"
+      wx:key="id"
+      class="message-item {{item.role === 'user' ? 'msg-user' : 'msg-ai'}}"
+      id="msg-{{item.id}}"
+    >
+      <!-- AI 消息 -->
+      <view class="msg-bubble msg-bubble-ai" wx:if="{{item.role === 'ai'}}">
+        <text class="msg-text" selectable="true">{{item.content}}</text>
+      </view>
+
+      <!-- 用户消息 -->
+      <view class="msg-bubble msg-bubble-user" wx:if="{{item.role === 'user'}}">
+        <text class="msg-text" selectable="true">{{item.content}}</text>
+      </view>
+
+      <!-- 时间戳 -->
+      <view class="msg-time">{{item.time}}</view>
+    </view>
+
+    <!-- AI 正在输入中动画 -->
+    <view class="message-item msg-ai" wx:if="{{isLoading}}">
+      <view class="msg-bubble msg-bubble-ai typing-bubble">
+        <view class="loading-dots">
+          <view class="dot"></view>
+          <view class="dot"></view>
+          <view class="dot"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部占位，确保最后一条消息不被输入区遮挡 -->
+    <view style="height: 180rpx;"></view>
+  </scroll-view>
+
+  <!-- 网络错误提示 -->
+  <view class="error-bar" wx:if="{{isError}}" bindtap="retryLastMessage">
+    <text>⚠️ 网络连接失败，点击重试</text>
+  </view>
+
+  <!-- 快捷问题横滑栏 -->
+  <view class="quick-bar">
+    <scroll-view scroll-x class="quick-scroll" enable-flex>
+      <view
+        wx:for="{{quickQuestions}}"
+        wx:key="*this"
+        class="quick-tag"
+        data-question="{{item}}"
+        bindtap="tapQuickQuestion"
+      >{{item}}</view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部输入区域 -->
+  <view class="input-area">
+    <input
+      class="input-box"
+      type="text"
+      value="{{inputText}}"
+      placeholder="请输入您的问题..."
+      placeholder-style="color:#8E8E93;font-size:28rpx;"
+      adjust-position="true"
+      cursor-spacing="12"
+      confirm-type="send"
+      bindinput="onInputChange"
+      bindconfirm="sendMessage"
+      disabled="{{isLoading}}"
+    />
+    <button
+      class="send-btn {{inputText.length > 0 ? 'send-btn-active' : ''}}"
+      bindtap="sendMessage"
+      disabled="{{isLoading || inputText.length === 0}}"
+    >发送</button>
+  </view>
+
+</view>

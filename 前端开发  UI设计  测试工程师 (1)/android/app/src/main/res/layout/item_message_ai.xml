@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pineapple iMessage 风格 AI / Agent 气泡 — 左对齐 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:paddingVertical="3dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_ai_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="280dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:background="@drawable/bg_bubble_ai"
+        android:textColor="#1C1C1E"
+        android:textSize="15sp"
+        android:lineSpacingExtra="4dp"
+        android:textIsSelectable="true"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="-0.01" />
+
+    <TextView
+        android:id="@+id/tv_ai_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="2dp"
+        android:textColor="#8E8E93"
+        android:textSize="11sp"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="-0.01" />
+</LinearLayout>

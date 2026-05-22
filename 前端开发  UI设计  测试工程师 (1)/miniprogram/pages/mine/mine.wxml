@@ -1,0 +1,37 @@
+<!-- 个人中心页 - Pineapple 风格 -->
+<view class="mine-page">
+
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <view class="avatar">👤</view>
+    <view class="user-info">
+      <view class="user-name">{{nickname || '用户'}}</view>
+      <view class="user-id">ID: {{userId || '未登录'}}</view>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="menu-section">
+    <view class="menu-item" bindtap="goToHistory">
+      <text class="menu-icon">📋</text>
+      <text class="menu-label">对话记录</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="goToFeedback">
+      <text class="menu-icon">💬</text>
+      <text class="menu-label">意见反馈</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="showAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-label">关于我们</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 登出按钮 -->
+  <view class="logout-section">
+    <button class="logout-btn" bindtap="handleLogout">退出登录</button>
+  </view>
+
+</view>

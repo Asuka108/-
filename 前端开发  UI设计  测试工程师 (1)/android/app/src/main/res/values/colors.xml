@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Pineapple Design System — 低饱和度极简主义 -->
+    <color name="colorPrimary">#0071e3</color>
+    <color name="colorPrimaryDark">#005bb8</color>
+    <color name="colorAccent">#0071e3</color>
+
+    <color name="pineappleBlue">#0071e3</color>
+    <color name="pineappleBlueHover">#0077ed</color>
+    <color name="pineappleBackground">#fbfbfd</color>
+    <color name="pineappleCard">#FFFFFF</color>
+    <color name="pineappleText">#1c1c1e</color>
+    <color name="pineappleTextSecondary">#6e6e73</color>
+    <color name="pineappleTextTertiary">#86868b</color>
+    <color name="pineappleSeparator">#14000000</color>
+    <color name="pineappleAiBubble">#f0f0f3</color>
+    <color name="pineappleUserBubble">#0071e3</color>
+    <color name="pineappleInputBg">#f5f5f7</color>
+    <color name="pineappleError">#FF3B30</color>
+    <color name="pineappleSuccess">#34C759</color>
+    <color name="pineappleWarning">#FF9500</color>
+    <color name="white">#FFFFFF</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
+</resources>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>AirPods AI Assistant</title>
+    <style>
+        :root {
+            --bg: #fbfbfd;
+            --text: #1c1c1e;
+            --text-secondary: #6e6e73;
+            --text-tertiary: #86868b;
+            --blue: #0071e3;
+            --blue-hover: #0077ed;
+            --white: #ffffff;
+            --separator: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.72);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -pineapple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.47059;
+            font-weight: 400;
+            letter-spacing: -0.022em;
+            overflow-x: hidden;
+        }
+
+        /* ============ Navigation ============ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 48px;
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid var(--separator);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            color: var(--text-tertiary);
+        }
+
+        /* ============ Hero ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding-top: 48px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--blue);
+            letter-spacing: 0;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 5.5vw, 56px);
+            font-weight: 600;
+            line-height: 1.07143;
+            letter-spacing: -0.005em;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .hero h2 {
+            font-size: clamp(24px, 3.5vw, 32px);
+            font-weight: 500;
+            line-height: 1.125;
+            letter-spacing: 0.004em;
+            color: var(--text);
+            margin-bottom: 32px;
+            background: linear-gradient(135deg, #1c1c1e 0%, #6e6e73 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-price {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 64px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--blue);
+            color: #fff;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1;
+            padding: 14px 28px;
+            border-radius: 980px;
+            transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+            letter-spacing: -0.01em;
+        }
+        .btn-primary:hover {
+            background: var(--blue-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0, 113, 227, 0.28);
+        }
+        .btn-primary svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--blue);
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1;
+            padding: 14px 28px;
+            border-radius: 980px;
+            border: 1px solid var(--blue);
+            transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+            letter-spacing: -0.01em;
+        }
+        .btn-secondary:hover {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        /* ============ Product Image ============ */
+        .product-image {
+            width: 100%;
+            max-width: 380px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            mix-blend-mode: multiply;
+            filter: contrast(1.02);
+        }
+
+        /* ============ Features Grid ============ */
+        .features-section {
+            padding: 120px 0 80px;
+            max-width: 980px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .features-eyebrow {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--blue);
+            letter-spacing: 0;
+            margin-bottom: 12px;
+        }
+
+        .features-section h3 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 600;
+            line-height: 1.125;
+            letter-spacing: -0.002em;
+            margin-bottom: 64px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            padding: 0 24px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 32px 20px 28px;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 20px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: #f5f5f7;
+            transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .feature-card:hover .feature-icon {
+            transform: scale(1.08);
+        }
+
+        .feature-card h4 {
+            font-size: 19px;
+            font-weight: 600;
+            line-height: 1.21;
+            letter-spacing: 0.006em;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            line-height: 1.47059;
+            color: var(--text-secondary);
+            letter-spacing: -0.016em;
+        }
+
+        /* ============ Specs Bar ============ */
+        .specs-bar {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .spec-item {
+            padding: 20px;
+        }
+
+        .spec-label {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .spec-value {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1.14286;
+            letter-spacing: -0.005em;
+            color: var(--text);
+        }
+
+        /* ============ Agent Link Section ============ */
+        .agent-section {
+            text-align: center;
+            padding: 48px 24px 80px;
+            background: var(--bg);
+        }
+
+        .agent-section .divider {
+            width: 1px;
+            height: 24px;
+            background: var(--separator);
+            margin: 0 auto 32px;
+        }
+
+        .agent-section p {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+
+        .agent-section a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .agent-section a:hover {
+            color: var(--blue);
+        }
+
+        /* ============ Footer ============ */
+        .footer {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 24px 24px 48px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 12px;
+            line-height: 1.47059;
+            color: var(--text-tertiary);
+            letter-spacing: -0.01em;
+        }
+
+        .footer-note {
+            margin-top: 12px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 12px;
+            display: inline-block;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ============ Responsive ============ */
+        @media (max-width: 834px) {
+            .product-image { max-width: 300px; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .specs-bar { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 640px) {
+            .hero { min-height: 90vh; }
+            .product-image { max-width: 250px; }
+            .features-grid { grid-template-columns: 1fr; gap: 16px; }
+            .specs-bar { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .hero-cta { flex-direction: column; gap: 12px; width: 100%; max-width: 320px; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+            .hero h1 { font-size: 36px; }
+            .hero h2 { font-size: 21px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">AirPods AI Assistant</nav>
+
+<section class="hero">
+    <div class="hero-badge">全新发布</div>
+    <h1>AirPods AI 助手</h1>
+    <h2>你的专属耳机售后专家</h2>
+    <p class="hero-price">AI 驱动 &middot; 7&#215;24 全天候 &middot; 完全免费</p>
+
+    <div class="hero-cta">
+        <a class="btn-primary" href="app-debug.apk" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            下载 Android 版
+        </a>
+        <a class="btn-secondary" href="#features">了解更多</a>
+    </div>
+
+    <!-- Product Image -->
+    <div class="product-image">
+        <img src="airpods.png" alt="AirPods" />
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+    <div class="features-eyebrow">核心功能</div>
+    <h3>为你的 AirPods 提供<br>全方位智能支持</h3>
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <h4>AI 智能问答</h4>
+            <p>基于 DeepSeek 大模型，精准理解你的耳机问题，快速给出专业解答。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h4>7&#215;24 全天候</h4>
+            <p>无论凌晨还是周末，AI 客服随时在线，无需排队等待。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.6" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            </div>
+            <h4>人工无缝转接</h4>
+            <p>复杂问题一键转接人工客服，AI 与真人协作，服务不中断。</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h4>隐私安全保障</h4>
+            <p>所有对话数据加密传输，你的耳机问题和设备信息完全私密。</p>
+        </div>
+    </div>
+</section>
+
+<!-- Specs -->
+<div class="specs-bar">
+    <div class="spec-item">
+        <div class="spec-label">版本</div>
+        <div class="spec-value">v2.1.1</div>
+    </div>
+    <div class="spec-item">
+        <div class="spec-label">大小</div>
+        <div class="spec-value">6 MB</div>
+    </div>
+    <div class="spec-item">
+        <div class="spec-label">系统要求</div>
+        <div class="spec-value">Android 7+</div>
+    </div>
+    <div class="spec-item">
+        <div class="spec-label">更新日期</div>
+        <div class="spec-value">2026/05</div>
+    </div>
+</div>
+
+<!-- Agent Link -->
+<div class="agent-section">
+    <div class="divider"></div>
+    <p><a href="agent.html">客服工作台入口 ›</a></p>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+    <p>安装前请在系统设置中开启「允许安装未知来源应用」</p>
+    <div class="footer-note">与 Pineapple 官方无关 &middot; 仅供学习使用</div>
+</div>
+
+</body>
+</html>

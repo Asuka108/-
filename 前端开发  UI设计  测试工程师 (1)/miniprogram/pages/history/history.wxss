@@ -1,0 +1,118 @@
+/* 对话历史页样式 - Pineapple 风格 */
+
+.history-page {
+  min-height: 100vh;
+  background-color: #F2F2F7;
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ===== 加载中 ===== */
+.loading-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 10rpx;
+  margin-bottom: 20rpx;
+}
+
+.loading-dots .dot {
+  width: 14rpx;
+  height: 14rpx;
+  background-color: #8E8E93;
+  border-radius: 50%;
+  animation: dot-bounce 1.2s infinite ease-in-out;
+}
+
+.loading-dots .dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots .dot:nth-child(3) { animation-delay: 0.4s; }
+
+.loading-text {
+  font-size: 26rpx;
+  color: #8E8E93;
+}
+
+/* ===== 空状态 ===== */
+.empty-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-title {
+  font-size: 32rpx;
+  color: #1C1C1E;
+  margin-bottom: 12rpx;
+}
+
+.empty-subtitle {
+  font-size: 26rpx;
+  color: #8E8E93;
+}
+
+/* ===== 对话列表 ===== */
+.history-list {
+  padding: 24rpx 0;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  height: 100vh;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  margin: 0 32rpx 12rpx;
+  padding: 28rpx 24rpx;
+  border-radius: 16rpx;
+  transition: all 0.15s;
+}
+
+.history-item:active {
+  background-color: #F2F2F7;
+  transform: scale(0.98);
+}
+
+.item-left {
+  margin-right: 20rpx;
+}
+
+.item-icon {
+  font-size: 40rpx;
+}
+
+.item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-title {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #1C1C1E;
+  margin-bottom: 8rpx;
+}
+
+.item-meta {
+  display: flex;
+  gap: 24rpx;
+  font-size: 24rpx;
+  color: #8E8E93;
+}
+
+.item-arrow {
+  font-size: 40rpx;
+  color: #C6C6C8;
+  margin-left: 16rpx;
+}

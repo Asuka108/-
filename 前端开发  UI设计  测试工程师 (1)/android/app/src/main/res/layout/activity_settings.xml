@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f7">
+
+    <!-- 标题栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:background="#f5f5f7">
+
+        <TextView
+            android:id="@+id/btn_back"
+            android:layout_width="48dp" android:layout_height="36dp"
+            android:gravity="center|start"
+            android:text="←" android:textColor="#0071e3" android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:gravity="center"
+            android:text="@string/settings_title"
+            android:textColor="#1d1d1f" android:textSize="17sp"
+            android:fontFamily="sans-serif-medium" />
+
+        <View android:layout_width="48dp" android:layout_height="1dp" />
+    </LinearLayout>
+
+    <!-- 语言 -->
+    <TextView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="PREFERENCES" android:textColor="#86868b" android:textSize="13sp"
+        android:paddingStart="20dp" android:paddingTop="32dp" android:paddingBottom="8dp"
+        android:letterSpacing="0.5" android:fontFamily="sans-serif" />
+
+    <LinearLayout
+        android:id="@+id/row_language"
+        android:layout_width="match_parent" android:layout_height="44dp"
+        android:gravity="center_vertical" android:paddingHorizontal="20dp"
+        android:background="#ffffff"
+        android:clickable="true" android:focusable="true">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="@string/settings_language"
+            android:textColor="#1d1d1f" android:textSize="17sp" />
+        <TextView android:id="@+id/tv_lang_value"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="中文" android:textColor="#86868b" android:textSize="17sp" />
+        <TextView android:layout_width="24dp" android:layout_height="wrap_content"
+            android:text="›" android:textColor="#c6c6c8" android:textSize="22sp" android:gravity="end" />
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="0.5dp"
+        android:background="#e5e5ea" android:layout_marginStart="20dp" />
+
+    <!-- 关于 -->
+    <TextView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/settings_about_header" android:textColor="#86868b" android:textSize="13sp"
+        android:paddingStart="20dp" android:paddingTop="32dp" android:paddingBottom="8dp"
+        android:letterSpacing="0.5" android:fontFamily="sans-serif" />
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="44dp"
+        android:gravity="center_vertical" android:paddingHorizontal="20dp"
+        android:background="#ffffff">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="@string/settings_app_name_label"
+            android:textColor="#1d1d1f" android:textSize="17sp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/app_name" android:textColor="#86868b" android:textSize="17sp" />
+    </LinearLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="0.5dp"
+        android:background="#e5e5ea" android:layout_marginStart="20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="44dp"
+        android:gravity="center_vertical" android:paddingHorizontal="20dp"
+        android:background="#ffffff">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="@string/settings_version_label"
+            android:textColor="#1d1d1f" android:textSize="17sp" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="1.2.0" android:textColor="#86868b" android:textSize="17sp" />
+    </LinearLayout>
+
+    <!-- 学习用途声明 -->
+    <TextView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="@string/settings_disclaimer"
+        android:textColor="#86868b" android:textSize="13sp"
+        android:paddingStart="20dp" android:paddingEnd="20dp"
+        android:paddingTop="12dp" android:lineSpacingExtra="4dp" />
+
+    <!-- 退出登录 -->
+    <TextView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="ACCOUNT" android:textColor="#86868b" android:textSize="13sp"
+        android:paddingStart="20dp" android:paddingTop="32dp" android:paddingBottom="8dp"
+        android:letterSpacing="0.5" android:fontFamily="sans-serif" />
+
+    <TextView
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent" android:layout_height="44dp"
+        android:gravity="center"
+        android:text="@string/settings_logout"
+        android:textColor="#FF3B30" android:textSize="17sp"
+        android:background="#ffffff"
+        android:clickable="true" android:focusable="true" />
+</LinearLayout>
