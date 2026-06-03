@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>菠萝耳机商城 - 下载</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; min-height: 100vh; }
+.container { max-width: 680px; margin: 0 auto; padding: 60px 24px; text-align: center; }
+.logo { font-size: 72px; margin-bottom: 16px; }
+h1 { font-size: 40px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.5px; }
+.subtitle { font-size: 20px; color: #86868b; margin-bottom: 48px; line-height: 1.4; }
+.download-btn { display: inline-flex; align-items: center; gap: 12px; background: #007AFF; color: #fff; padding: 16px 40px; border-radius: 14px; text-decoration: none; font-size: 18px; font-weight: 600; transition: all 0.3s; box-shadow: 0 4px 20px rgba(0,123,255,0.3); }
+.download-btn:hover { background: #0066d6; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,123,255,0.4); }
+.download-btn .icon { font-size: 24px; }
+.version { margin-top: 16px; font-size: 13px; color: #86868b; }
+.features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 60px; text-align: left; }
+.feature-card { background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.feature-card .emoji { font-size: 32px; margin-bottom: 12px; }
+.feature-card h3 { font-size: 16px; margin-bottom: 6px; }
+.feature-card p { font-size: 14px; color: #86868b; line-height: 1.5; }
+.footer { margin-top: 60px; font-size: 13px; color: #86868b; }
+.footer a { color: #007AFF; text-decoration: none; }
+@media (max-width: 640px) { .features { grid-template-columns: 1fr; } h1 { font-size: 32px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">🍍</div>
+  <h1>菠萝耳机商城</h1>
+  <p class="subtitle">AI 智能售后客服 · 一站式耳机购物体验</p>
+
+  <a class="download-btn" href="/download/app-debug.apk?v=2.0.1" download>
+    <span class="icon">🤖</span>
+    下载 Android 版 v2.0.1
+  </a>
+  <div class="version">v2.0.1 · 约 6MB · Android 7.0+ · 含商城购物功能</div>
+
+  <div class="features">
+    <div class="feature-card">
+      <div class="emoji">🎧</div>
+      <h3>精选耳机商城</h3>
+      <p>菠萝耳机全系列，新品热销一手掌握，轻松下单购买</p>
+    </div>
+    <div class="feature-card">
+      <div class="emoji">🤖</div>
+      <h3>AI 智能客服</h3>
+      <p>基于 DeepSeek 大模型，7×24 小时在线解答售后问题</p>
+    </div>
+    <div class="feature-card">
+      <div class="emoji">🛒</div>
+      <h3>便捷购物体验</h3>
+      <p>购物车、订单管理、模拟支付，完整购物流程</p>
+    </div>
+    <div class="feature-card">
+      <div class="emoji">👨‍💼</div>
+      <h3>人工客服转接</h3>
+      <p>AI 无法解决时自动转接人工，实时对话沟通</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p><a href="/admin/">管理后台</a> · <a href="/docs">API 文档</a></p>
+    <p style="margin-top:8px">与 Pineapple 官方无关 — 仅供学习使用</p>
+  </div>
+</div>
+</body>
+</html>

@@ -37,6 +37,16 @@
             android:layout_height="1dp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="暂无对话记录"
+        android:textColor="#8E8E93"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_history"
         android:layout_width="match_parent"

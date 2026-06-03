@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fbfbfd">
+
+    <!-- 顶栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:background="#fafafc">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="菠萝耳机AI客服"
+            android:textColor="#1c1c1e"
+            android:textSize="17sp"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/btn_new_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:textColor="#0066cc"
+            android:textSize="14sp"
+            android:text="新对话" />
+
+        <TextView
+            android:id="@+id/btn_transfer"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:textColor="#FF9500"
+            android:textSize="14sp"
+            android:text="转人工" />
+
+        <TextView
+            android:id="@+id/btn_exit_agent"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:textColor="#FF3B30"
+            android:textSize="14sp"
+            android:text="退出人工"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/btn_history"
+            android:layout_width="44dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:textColor="#0066cc"
+            android:textSize="14sp"
+            android:text="历史" />
+
+        <TextView
+            android:id="@+id/btn_settings"
+            android:layout_width="44dp"
+            android:layout_height="32dp"
+            android:gravity="center"
+            android:textColor="#0066cc"
+            android:textSize="14sp"
+            android:text="设置" />
+    </LinearLayout>
+
+    <!-- 消息列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_messages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp"
+        android:clipToPadding="false"
+        android:scrollbars="none" />
+
+    <!-- 快捷问题 -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff"
+        android:scrollbars="none"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tag_q1"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:paddingHorizontal="18dp"
+                android:gravity="center"
+                android:text="AirPods怎么连接？"
+                android:textSize="13sp"
+                android:textColor="#0071e3"
+                android:background="@drawable/bg_quick_tag"
+                android:layout_marginEnd="8dp"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tag_q2"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:paddingHorizontal="18dp"
+                android:gravity="center"
+                android:text="左耳没声音怎么办？"
+                android:textSize="13sp"
+                android:textColor="#0071e3"
+                android:background="@drawable/bg_quick_tag"
+                android:layout_marginEnd="8dp"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tag_q3"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:paddingHorizontal="18dp"
+                android:gravity="center"
+                android:text="保修期多久？"
+                android:textSize="13sp"
+                android:textColor="#0071e3"
+                android:background="@drawable/bg_quick_tag"
+                android:layout_marginEnd="8dp"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tag_q4"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:paddingHorizontal="18dp"
+                android:gravity="center"
+                android:text="如何辨别真伪？"
+                android:textSize="13sp"
+                android:textColor="#0071e3"
+                android:background="@drawable/bg_quick_tag"
+                android:layout_marginEnd="8dp"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/tag_q5"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                android:paddingHorizontal="18dp"
+                android:gravity="center"
+                android:text="电池不耐用怎么办？"
+                android:textSize="13sp"
+                android:textColor="#0071e3"
+                android:background="@drawable/bg_quick_tag"
+                android:maxLines="1" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- 底部输入区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fafafc"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_input"
+            android:paddingHorizontal="18dp"
+            android:hint="请输入您的问题..."
+            android:textSize="15sp"
+            android:maxLines="4"
+            android:inputType="textMultiLine"
+            android:imeOptions="actionSend" />
+
+        <TextView
+            android:id="@+id/btn_send"
+            android:layout_width="56dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_send_btn"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

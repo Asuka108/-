@@ -3,7 +3,7 @@
 """
 from fastapi import APIRouter, HTTPException
 from database import get_db
-from models import ChatSendRequest, ChatReply, MessageItem, ConversationItem
+from models import ChatSendRequest, ChatReply, MessageItem, ConversationItem, ConversationCreateRequest
 from services.ai_service import get_ai_response
 from services.kb_service import search_knowledge_base
 from prompts.system_prompt import SYSTEM_PROMPT
@@ -136,14 +136,17 @@ def list_conversations(user_id: int, page: int = 1, size: int = 20):
     try:
         offset = (page - 1) * size
         rows = db.execute(
-            "SELECT id, title, created_at, updated_at FROM conversations "
-            "WHERE user_id = %s ORDER BY updated_at DESC LIMIT %s OFFSET %s",
+            "SELECT c.id, c.title, c.created_at, c.updated_at, "
+            "(SELECT COUNT(*) FROM messages m WHERE m.conversation_id = c.id) AS msg_count "
+            "FROM conversations c "
+            "WHERE c.user_id = %s ORDER BY c.updated_at DESC LIMIT %s OFFSET %s",
             (user_id, size, offset),
         ).fetchall()
         return [
             {
                 "id": r["id"],
                 "title": r["title"],
+                "msg_count": r["msg_count"],
                 "created_at": str(r["created_at"]),
                 "updated_at": str(r["updated_at"]),
             }
@@ -154,14 +157,16 @@ def list_conversations(user_id: int, page: int = 1, size: int = 20):
 
 
 @router.post("/conversations")
-def create_conversation(user_id: int, title: str = "新对话"):
+def create_conversation(req: ConversationCreateRequest = None):
     """创建新对话"""
     db = get_db()
     try:
+        user_id = req.user_id if req else 1
+        title = req.title if req else "新对话"
         cursor = db.execute(
             "INSERT INTO conversations (user_id, title) VALUES (%s, %s)", (user_id, title)
         )
         db.commit()
-        return {"id": cursor.lastrowid, "title": title}
+        return {"id": cursor.lastrowid, "title": title, "conversation_id": str(cursor.lastrowid)}
     finally:
         db.close()

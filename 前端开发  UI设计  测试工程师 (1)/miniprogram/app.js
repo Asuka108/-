@@ -3,7 +3,7 @@ App({
   globalData: {
     token: null,
     userId: null,
-    baseUrl: 'http://8.137.205.18/api/v1'
+    baseUrl: 'http://your-server-ip/api/v1'
   },
 
   onLaunch() {

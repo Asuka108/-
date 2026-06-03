@@ -1,5 +1,5 @@
-// API 请求封装
-const BASE_URL = 'http://8.137.205.18/api/v1';
+// API 请求封装（部署时修改为实际服务器地址）
+const BASE_URL = 'http://your-server-ip/api/v1';
 
 /**
  * 统一请求方法

@@ -18,8 +18,8 @@ public class ApiClient {
 
     private static final String TAG = "ApiClient";
 
-    // 部署后替换为实际服务器地址
-    private static String BASE_URL = "http://10.0.2.2:8000/api/v1";
+    // 服务器地址（可通过 setBaseUrl 动态修改）
+    private static String BASE_URL = "http://your-server-ip/api/v1";
 
     private OkHttpClient client;
     private Gson gson;
@@ -111,11 +111,22 @@ public class ApiClient {
     private Request buildRequest(String method, String url, String body) {
         Request.Builder builder = new Request.Builder().url(url);
         if (body != null) {
-            builder.post(RequestBody.create(body, MediaType.parse("application/json")));
+            RequestBody requestBody = RequestBody.create(body, MediaType.parse("application/json"));
+            if ("PUT".equals(method)) {
+                builder.put(requestBody);
+            } else if ("DELETE".equals(method)) {
+                builder.delete(requestBody);
+            } else {
+                builder.post(requestBody);
+            }
         } else if ("POST".equals(method) || "PUT".equals(method)) {
-            builder.post(RequestBody.create("{}", MediaType.parse("application/json")));
-        }
-        if ("DELETE".equals(method)) {
+            RequestBody emptyBody = RequestBody.create("{}", MediaType.parse("application/json"));
+            if ("PUT".equals(method)) {
+                builder.put(emptyBody);
+            } else {
+                builder.post(emptyBody);
+            }
+        } else if ("DELETE".equals(method)) {
             builder.delete();
         }
         if (token != null && !token.isEmpty()) {

@@ -449,7 +449,7 @@ public class ChatActivity extends AppCompatActivity {
                 .readTimeout(0, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .build();
         Request wsReq = new Request.Builder()
-                .url("ws://8.137.205.18/ws/chat/" + convId + "/user")
+                .url("ws://your-server-ip/ws/chat/" + convId + "/user")
                 .header("User-Agent", "AirPodsAssistant-Android")
                 .build();
         ws = wsClient.newWebSocket(wsReq, new WebSocketListener() {

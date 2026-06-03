@@ -1,0 +1,74 @@
+# ==================== 环境变量（含密钥） ====================
+.env
+.env.local
+.env.*.local
+*.env
+!*.env.example
+
+# ==================== 数据库备份（含密码哈希） ====================
+*.sql
+
+# ==================== 部署脚本（含服务器密码） ====================
+c/deploy/deploy.py
+大数据/deploy.py
+大数据/deploy_update.py
+大数据/deploy.sh
+大数据/deploy_all.sh
+大数据/setup.sh
+
+# ==================== 服务器备份 ====================
+云服务器备份/
+
+# ==================== 团队协作文件 ====================
+前端开发  UI设计  测试工程师 (1)/
+
+# ==================== 含密码的工具脚本 ====================
+insert_apple_products.py
+update_knowledge_base.py
+
+# ==================== 测试脚本 ====================
+test_*.py
+
+# ==================== Python ====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
+dist/
+build/
+*.sqlite3
+backend/data/
+
+# ==================== Android ====================
+*.apk
+*.ap_
+*.dex
+*.class
+**/build/
+**/.gradle/
+local.properties
+google-services.json
+
+# ==================== IDE ====================
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ==================== 系统文件 ====================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+*.bak
+
+# ==================== 安全 ====================
+*.pem
+*.key
+*.p12

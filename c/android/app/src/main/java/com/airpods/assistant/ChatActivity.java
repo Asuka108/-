@@ -1,6 +1,7 @@
 package com.airpods.assistant;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,12 +21,14 @@ import com.airpods.assistant.adapter.ChatAdapter;
 import com.airpods.assistant.api.ApiClient;
 import com.airpods.assistant.model.Message;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import okhttp3.Call;
@@ -65,8 +68,16 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        // 检查是否从历史记录进入（带conversation_id）
+        String existingConvId = getIntent().getStringExtra("conversation_id");
         initViews();
-        initChat();
+
+        if (existingConvId != null && !existingConvId.isEmpty()) {
+            conversationId = existingConvId;
+            loadConversationHistory(existingConvId);
+        } else {
+            initChat();
+        }
     }
 
     private void initViews() {
@@ -132,8 +143,14 @@ public class ChatActivity extends AppCompatActivity {
         // 异步创建对话
         new Thread(() -> {
             try {
+                int uid = ApiClient.getInstance().getUserId();
+                if (uid <= 0) {
+                    SharedPreferences sp = getSharedPreferences("auth", MODE_PRIVATE);
+                    uid = sp.getInt("user_id", 1);
+                }
                 JsonObject req = new JsonObject();
                 req.addProperty("title", "新对话");
+                req.addProperty("user_id", uid);
                 String resp = ApiClient.getInstance().postSync("/chat/conversations", req);
                 JsonObject json = gson.fromJson(resp, JsonObject.class);
                 if (json.has("conversation_id")) {
@@ -141,6 +158,38 @@ public class ChatActivity extends AppCompatActivity {
                 }
             } catch (Exception ignored) {
                 // 离线模式也可使用
+            }
+        }).start();
+    }
+
+    /** 加载已有对话的历史消息 */
+    private void loadConversationHistory(String convId) {
+        new Thread(() -> {
+            try {
+                String resp = ApiClient.getInstance().getSync("/chat/history/" + convId);
+                JsonArray arr = gson.fromJson(resp, JsonArray.class);
+                List<Message> historyMsgs = new ArrayList<>();
+                for (int i = 0; i < arr.size(); i++) {
+                    JsonObject obj = arr.get(i).getAsJsonObject();
+                    String role = obj.has("role") ? obj.get("role").getAsString() : "user";
+                    String content = obj.has("content") ? obj.get("content").getAsString() : "";
+                    String time = obj.has("created_at") ? obj.get("created_at").getAsString() : getCurrentTime();
+                    String source = "user".equals(role) ? "user" : "ai";
+                    historyMsgs.add(new Message(generateId(), role, source, content, time));
+                }
+                mainHandler.post(() -> {
+                    adapter.clearMessages();
+                    for (Message m : historyMsgs) {
+                        adapter.addMessage(m);
+                    }
+                    scrollToBottom();
+                });
+            } catch (Exception e) {
+                mainHandler.post(() -> {
+                    Message errMsg = new Message(0, "ai", "ai",
+                            "加载历史消息失败，请检查网络后重试。", getCurrentTime());
+                    adapter.addMessage(errMsg);
+                });
             }
         }).start();
     }
@@ -164,7 +213,12 @@ public class ChatActivity extends AppCompatActivity {
         // 构造请求
         JsonObject body = new JsonObject();
         body.addProperty("message", content);
-        body.addProperty("user_id", ApiClient.getInstance().getUserId());
+        int uid = ApiClient.getInstance().getUserId();
+        if (uid <= 0) {
+            SharedPreferences sp = getSharedPreferences("auth", MODE_PRIVATE);
+            uid = sp.getInt("user_id", 1);
+        }
+        body.addProperty("user_id", uid);
         if (conversationId != null) {
             body.addProperty("conversation_id", Integer.parseInt(conversationId));
         }
@@ -193,6 +247,10 @@ public class ChatActivity extends AppCompatActivity {
                             replyText = res.get("reply").getAsString();
                         } else if (res.has("data") && res.getAsJsonObject("data").has("reply")) {
                             replyText = res.getAsJsonObject("data").get("reply").getAsString();
+                        }
+                        // 保存conversation_id，避免每次消息创建新会话
+                        if (conversationId == null && res.has("conversation_id")) {
+                            conversationId = String.valueOf(res.get("conversation_id").getAsInt());
                         }
                     }
                 } catch (Exception ignored) {}

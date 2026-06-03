@@ -19,7 +19,7 @@ public class ApiClient {
     private static final String TAG = "ApiClient";
 
     // 部署后替换为实际服务器地址
-    private static String BASE_URL = "http://8.137.205.18/api/v1";
+    private static String BASE_URL = "http://your-server-ip/api/v1";
 
     private OkHttpClient client;
     private Gson gson;

@@ -1,8 +1,11 @@
 package com.airpods.assistant;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -17,15 +20,20 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 对话历史页
+ * 展示当前用户的所有对话记录，点击可查看详情
  */
 public class HistoryActivity extends AppCompatActivity {
 
+    private static final String TAG = "HistoryActivity";
+
     private RecyclerView rvHistory;
+    private TextView tvEmpty;
     private HistoryAdapter adapter;
     private List<HistoryItem> items = new ArrayList<>();
     private Gson gson = new Gson();
@@ -37,6 +45,7 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         rvHistory = findViewById(R.id.rv_history);
+        tvEmpty = findViewById(R.id.tv_empty);
         rvHistory.setLayoutManager(new LinearLayoutManager(this));
         adapter = new HistoryAdapter();
         rvHistory.setAdapter(adapter);
@@ -46,18 +55,77 @@ public class HistoryActivity extends AppCompatActivity {
         loadHistory();
     }
 
+    /** 解析用户ID，优先从ApiClient获取，其次SharedPreferences，最后通过token接口查询 */
+    private int resolveUserId() {
+        ApiClient api = ApiClient.getInstance();
+        int userId = api.getUserId();
+        Log.d(TAG, "resolveUserId: ApiClient.userId=" + userId);
+        if (userId > 0) return userId;
+
+        SharedPreferences sp = getSharedPreferences("auth", MODE_PRIVATE);
+        userId = sp.getInt("user_id", 0);
+        Log.d(TAG, "resolveUserId: SharedPreferences.user_id=" + userId);
+        if (userId > 0) {
+            api.setUserId(userId);
+            return userId;
+        }
+
+        // 有token但没有user_id → 通过token查询用户信息
+        String token = api.getToken();
+        if (token == null || token.isEmpty()) {
+            token = sp.getString("token", null);
+            if (token != null && !token.isEmpty()) {
+                api.setToken(token);
+            }
+        }
+        Log.d(TAG, "resolveUserId: token=" + (token != null ? token.substring(0, Math.min(8, token.length())) + "..." : "null"));
+        if (token != null && !token.isEmpty()) {
+            try {
+                String resp = api.getSync("/auth/user/info?token=" + token);
+                Log.d(TAG, "resolveUserId: /auth/user/info response=" + resp);
+                JsonObject obj = gson.fromJson(resp, JsonObject.class);
+                if (obj.has("id")) {
+                    userId = obj.get("id").getAsInt();
+                    // 持久化存储
+                    sp.edit().putInt("user_id", userId).apply();
+                    api.setUserId(userId);
+                    Log.d(TAG, "resolveUserId: token-based recovery success, userId=" + userId);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "resolveUserId: token recovery failed", e);
+            }
+        }
+        return userId;
+    }
+
     private void loadHistory() {
+        tvEmpty.setText("加载中...");
+        tvEmpty.setVisibility(View.VISIBLE);
+        rvHistory.setVisibility(View.GONE);
+
         new Thread(() -> {
             try {
-                ApiClient api = ApiClient.getInstance();
-                int userId = api.getUserId();
+                int userId = resolveUserId();
+                Log.d(TAG, "loadHistory: final userId=" + userId);
                 if (userId <= 0) {
-                    mainHandler.post(() ->
-                            Toast.makeText(this, "请先登录", Toast.LENGTH_SHORT).show());
+                    mainHandler.post(() -> {
+                        Toast.makeText(HistoryActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                        tvEmpty.setText("请先登录\n\n请返回重新登录后再试");
+                        tvEmpty.setVisibility(View.VISIBLE);
+                        rvHistory.setVisibility(View.GONE);
+                    });
                     return;
                 }
-                String resp = api.getSync("/chat/conversations?user_id=" + userId);
+
+                ApiClient api = ApiClient.getInstance();
+                String url = "/chat/conversations?user_id=" + userId;
+                Log.d(TAG, "loadHistory: calling " + url);
+                String resp = api.getSync(url);
+                Log.d(TAG, "loadHistory: response=" + (resp != null ? resp.substring(0, Math.min(200, resp.length())) : "null"));
+
                 JsonArray arr = gson.fromJson(resp, JsonArray.class);
+
+                items.clear();
                 for (int i = 0; i < arr.size(); i++) {
                     JsonObject obj = arr.get(i).getAsJsonObject();
                     HistoryItem item = new HistoryItem();
@@ -67,12 +135,45 @@ public class HistoryActivity extends AppCompatActivity {
                     item.time = obj.has("updated_at") ? obj.get("updated_at").getAsString() : "";
                     items.add(item);
                 }
-                mainHandler.post(() -> adapter.notifyDataSetChanged());
+
+                Log.d(TAG, "loadHistory: parsed " + items.size() + " conversations");
+                mainHandler.post(() -> {
+                    adapter.notifyDataSetChanged();
+                    if (items.isEmpty()) {
+                        tvEmpty.setText("暂无对话记录\n\n在聊天页面发送消息后\n对话将显示在这里");
+                        tvEmpty.setVisibility(View.VISIBLE);
+                        rvHistory.setVisibility(View.GONE);
+                    } else {
+                        tvEmpty.setVisibility(View.GONE);
+                        rvHistory.setVisibility(View.VISIBLE);
+                    }
+                });
+            } catch (IOException e) {
+                Log.e(TAG, "loadHistory: network error", e);
+                mainHandler.post(() -> {
+                    Toast.makeText(HistoryActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                    tvEmpty.setText("网络连接失败\n请检查网络后重试\n\n" + e.getMessage());
+                    tvEmpty.setVisibility(View.VISIBLE);
+                    rvHistory.setVisibility(View.GONE);
+                });
             } catch (Exception e) {
-                mainHandler.post(() ->
-                        Toast.makeText(HistoryActivity.this, "加载历史记录失败", Toast.LENGTH_SHORT).show());
+                Log.e(TAG, "loadHistory: parse error", e);
+                mainHandler.post(() -> {
+                    Toast.makeText(HistoryActivity.this, "加载失败: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    tvEmpty.setText("加载失败\n" + e.getMessage());
+                    tvEmpty.setVisibility(View.VISIBLE);
+                    rvHistory.setVisibility(View.GONE);
+                });
             }
         }).start();
+    }
+
+    /** 点击历史记录项 → 跳转聊天页查看详情 */
+    private void onItemClick(HistoryItem item) {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("conversation_id", item.id);
+        intent.putExtra("conversation_title", item.title);
+        startActivity(intent);
     }
 
     static class HistoryItem {
@@ -92,13 +193,14 @@ public class HistoryActivity extends AppCompatActivity {
             HistoryItem item = items.get(position);
             holder.tvTitle.setText(item.title);
             holder.tvInfo.setText(item.msgCount + " 条消息  " + item.time);
+            holder.itemView.setOnClickListener(v -> onItemClick(item));
         }
 
         @Override
         public int getItemCount() { return items.size(); }
 
         class VH extends RecyclerView.ViewHolder {
-            android.widget.TextView tvTitle, tvInfo;
+            TextView tvTitle, tvInfo;
             VH(View v) {
                 super(v);
                 tvTitle = v.findViewById(R.id.tv_hist_title);

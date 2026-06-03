@@ -42,19 +42,21 @@ async def websocket_chat(websocket: WebSocket, conversation_id: int, role: str):
             # 保存消息到数据库
             db = get_db()
             try:
-                db.execute(
+                cursor = db.execute(
                     "INSERT INTO messages (conversation_id, role, content) VALUES (%s, %s, %s)",
                     (conversation_id, role, content),
                 )
                 db.commit()
+                msg_id = cursor.lastrowid
             finally:
                 db.close()
 
-            # 转发给对方
+            # 转发给对方（附带消息ID，避免轮询重复显示）
             other_role = "agent" if role == "user" else "user"
             if conversation_id in active_connections and other_role in active_connections[conversation_id]:
                 other_ws = active_connections[conversation_id][other_role]
                 await other_ws.send_text(json.dumps({
+                    "id": msg_id,
                     "role": role,
                     "content": content,
                     "conversation_id": conversation_id,

@@ -8,9 +8,9 @@ import tarfile
 import io
 import tempfile
 
-HOST = "8.137.205.18"
-USER = "root"
-PASSWORD = "Dsj123456."
+HOST = os.getenv("DEPLOY_HOST", "your-server-ip")
+USER = os.getenv("DEPLOY_USER", "root")
+PASSWORD = os.getenv("DEPLOY_PASSWORD", "")
 APP_DIR = "/var/www/after-sales-robot"
 SRC_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "backend")
 
@@ -71,15 +71,18 @@ def main():
 
     # Step 6: Configure .env
     print("\n[6/7] Configuring environment...")
+    mysql_password = os.getenv("MYSQL_PASSWORD", "")
+    deepseek_api_key = os.getenv("DEEPSEEK_API_KEY", "")
+    admin_phones = os.getenv("ADMIN_PHONES", "")
     env_cmd = f"""cat > {APP_DIR}/backend/.env << 'ENVEOF'
 MYSQL_HOST=127.0.0.1
 MYSQL_PORT=3306
 MYSQL_USER=airpods
-MYSQL_PASSWORD=Dsj123456.
+MYSQL_PASSWORD={mysql_password}
 MYSQL_DB=after_sales_robot
-DEEPSEEK_API_KEY=sk-21ebe19ea5974a1eaaec2e9e5ea16c25
+DEEPSEEK_API_KEY={deepseek_api_key}
 DEEPSEEK_API_URL=https://api.deepseek.com/v1/chat/completions
-ADMIN_PHONES=13800000000
+ADMIN_PHONES={admin_phones}
 ENVEOF"""
     run_cmd(ssh, env_cmd, "write .env")
 

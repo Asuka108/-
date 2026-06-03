@@ -1,4 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">菠萝耳机AI客服</string>
+    <string name="app_name">菠萝耳机支持</string>
+
+    <!-- 登录 -->
+    <string name="login_title">登录后享受智能售后服务</string>
+    <string name="login_username_hint">请输入用户名</string>
+    <string name="login_password_hint">请输入密码</string>
+    <string name="login_btn">登 录</string>
+    <string name="login_no_account">没有账号？点击注册</string>
+    <string name="login_has_account">已有账号？直接登录</string>
+    <string name="login_register_btn">注 册</string>
+    <string name="login_nickname_hint">昵称（选填）</string>
+
+    <!-- 聊天 -->
+    <string name="chat_input_hint">请输入您的问题...</string>
+    <string name="chat_send">发送</string>
+    <string name="chat_history">历史</string>
+    <string name="chat_settings">设置</string>
+    <string name="chat_new_conversation">新对话</string>
+
+    <!-- 快捷问题 -->
+    <string name="quick_q1">AirPods怎么连接？</string>
+    <string name="quick_q2">左耳没声音怎么办？</string>
+    <string name="quick_q3">保修期多久？</string>
+    <string name="quick_q4">如何辨别真伪？</string>
+    <string name="quick_q5">电池不耐用怎么办？</string>
+
+    <!-- 设置 -->
+    <string name="settings_title">设置</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_language_zh">中文</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_logout">退出登录</string>
+    <string name="settings_lang_changed">语言已更改，重启应用生效</string>
+    <string name="settings_about_header">关于</string>
+    <string name="settings_app_name_label">应用名称</string>
+    <string name="settings_version_label">版本</string>
+    <string name="settings_disclaimer">本应用仅用于大数据学习与技术研究，不涉及任何商业用途。</string>
+
+    <!-- 历史 -->
+    <string name="history_title">对话历史</string>
+    <string name="history_empty">暂无对话记录</string>
+    <string name="history_untitled">未命名对话</string>
 </resources>

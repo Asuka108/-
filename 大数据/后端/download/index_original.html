@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>苹果耳机AI客服 - 下载</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ---- 背景动效 ---- */
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 8s ease-in-out infinite;
+        }
+        .orb-1 { width: 300px; height: 300px; background: #007AFF; top: -10%; left: -15%; opacity: 0.25; animation-delay: 0s; }
+        .orb-2 { width: 260px; height: 260px; background: #5AC8FA; bottom: -12%; right: -12%; opacity: 0.2; animation-delay: -3s; }
+        .orb-3 { width: 200px; height: 200px; background: #5856D6; top: 50%; left: 50%; opacity: 0.15; animation-delay: -6s; }
+        .orb-4 { width: 180px; height: 180px; background: #34C759; top: 20%; right: 5%; opacity: 0.12; animation-delay: -2s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-15px, -50px) scale(0.9); }
+            75% { transform: translate(-25px, 20px) scale(1.05); }
+        }
+
+        /* ---- AirPods 背景 ---- */
+        .bg-airpods {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(520px, 85vw);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.07;
+            animation: breathe 6s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.04); }
+        }
+
+        /* ---- 主卡片 ---- */
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 440px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 28px;
+            padding: 44px 32px 36px;
+            text-align: center;
+            box-shadow: 0 24px 72px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        /* ---- 状态栏 ---- */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(52, 199, 89, 0.15);
+            border: 1px solid rgba(52, 199, 89, 0.3);
+            border-radius: 20px;
+            padding: 6px 14px;
+            margin-bottom: 28px;
+            font-size: 12px;
+            color: #30D158;
+            font-weight: 500;
+        }
+        .status-dot {
+            width: 7px; height: 7px;
+            background: #30D158;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ---- 图标 ---- */
+        .icon-wrap {
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(145deg, #007AFF, #5856D6);
+            border-radius: 22px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 36px rgba(0,122,255,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .icon-wrap svg { width: 48px; height: 48px; }
+
+        /* ---- 文字 ---- */
+        h1 {
+            font-size: 24px;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        /* ---- 功能亮点 ---- */
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: rgba(255,255,255,0.55);
+        }
+        .feature svg { width: 15px; height: 15px; opacity: 0.7; }
+
+        /* ---- 信息卡片 ---- */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+        .info-item {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 14px;
+            padding: 14px 12px;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .info-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+        .info-label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .info-value {
+            font-size: 15px;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        /* ---- 下载按钮 ---- */
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #007AFF, #5856D6);
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 24px rgba(0,122,255,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        .download-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+        .download-btn:hover::after {
+            transform: translateX(100%);
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0,122,255,0.45);
+        }
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+        .download-icon {
+            width: 20px; height: 20px;
+        }
+
+        /* ---- 底部 ---- */
+        .footer {
+            margin-top: 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .footer-text {
+            font-size: 12px;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.6;
+        }
+        .footer-safety {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.35);
+        }
+
+        /* ---- 响应式 ---- */
+        @media (max-width: 480px) {
+            .card { padding: 36px 22px 30px; border-radius: 24px; }
+            h1 { font-size: 21px; }
+            .info-grid { gap: 8px; }
+            .download-btn { font-size: 16px; padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 动态光晕 -->
+    <div class="bg-canvas">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <!-- 背景 AirPods -->
+    <svg class="bg-airpods" viewBox="0 0 500 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(90, 220)">
+            <path d="M45,0 C45,0 90,22 90,68 L90,140 C90,186 45,198 45,198 C45,198 0,186 0,140 L0,68 C0,22 45,0 45,0Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="5"/>
+            <ellipse cx="45" cy="60" rx="22" ry="28" fill="#D1D1D6"/>
+            <ellipse cx="45" cy="74" rx="15" ry="20" fill="#E5E5EA"/>
+            <rect x="34" y="142" width="22" height="34" rx="6" fill="#FFFFFF"/>
+        </g>
+        <g transform="translate(320, 220)">
+            <path d="M45,0 C45,0 90,22 90,68 L90,140 C90,186 45,198 45,198 C45,198 0,186 0,140 L0,68 C0,22 45,0 45,0Z" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="5"/>
+            <ellipse cx="45" cy="60" rx="22" ry="28" fill="#D1D1D6"/>
+            <ellipse cx="45" cy="74" rx="15" ry="20" fill="#E5E5EA"/>
+            <rect x="34" y="142" width="22" height="34" rx="6" fill="#FFFFFF"/>
+        </g>
+        <g transform="translate(150, 430)">
+            <rect x="0" y="0" width="200" height="126" rx="26" fill="#FFFFFF"/>
+            <rect x="8" y="-12" width="184" height="22" rx="11" fill="#FFFFFF"/>
+            <line x1="6" y1="0" x2="194" y2="0" stroke="#D1D1D6" stroke-width="2"/>
+            <circle cx="100" cy="58" r="5" fill="#34C759"/>
+            <ellipse cx="62" cy="74" rx="20" ry="26" fill="#F2F2F7"/>
+            <ellipse cx="138" cy="74" rx="20" ry="26" fill="#F2F2F7"/>
+        </g>
+    </svg>
+
+    <!-- 主卡片 -->
+    <div class="wrapper">
+        <div class="card">
+            <!-- 状态 -->
+            <div class="status-badge">
+                <span class="status-dot"></span> 服务正常运行
+            </div>
+
+            <!-- 图标 -->
+            <div class="icon-wrap">
+                <svg viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="54" cy="54" r="40" fill="#fff" opacity="0.2"/>
+                    <path d="M34 58C34 42 74 42 74 58" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                    <rect x="25" y="54" width="14" height="20" rx="7" fill="#fff"/>
+                    <rect x="69" y="54" width="14" height="20" rx="7" fill="#fff"/>
+                </svg>
+            </div>
+
+            <h1>苹果耳机AI客服</h1>
+            <p class="subtitle">AirPods 售后智能助手</p>
+
+            <!-- 功能亮点 -->
+            <div class="features">
+                <div class="feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                    智能问答
+                </div>
+                <div class="feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    7×24在线
+                </div>
+                <div class="feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    免费使用
+                </div>
+            </div>
+
+            <!-- 版本信息 -->
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">版本</div>
+                    <div class="info-value">v1.0.2</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">大小</div>
+                    <div class="info-value">约 6 MB</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">系统要求</div>
+                    <div class="info-value">Android 7.0+</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">更新日期</div>
+                    <div class="info-value">2026-05-18</div>
+                </div>
+            </div>
+
+            <!-- 下载按钮 -->
+            <a class="download-btn" href="app-debug.apk" download>
+                <svg class="download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                下载 Android 版
+            </a>
+
+            <!-- 底部 -->
+            <div class="footer">
+                <div class="footer-safety">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    安装前请开启「允许安装未知来源应用」
+                </div>
+                <span class="footer-text">Apple 风格设计 · 非官方应用</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

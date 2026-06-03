@@ -227,7 +227,7 @@
 </div>
 
 <script>
-const API = 'http://8.137.205.18/api/v1/agent';
+const API = location.origin + '/api/v1/agent';
 let agent = null;
 let currentTab = 'requests';
 let currentChat = null; // {conversation_id, user_id, username}
@@ -421,7 +421,7 @@ function connectWS(convId) {
     if (ws) { try { ws.close(); } catch(e) {} }
 
     const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const url = proto + '//8.137.205.18/ws/chat/' + convId + '/agent';
+    const url = proto + '//' + location.host + '/ws/chat/' + convId + '/agent';
 
     setWSStatus('正在连接...', 'warn');
     setInputEnabled(false);

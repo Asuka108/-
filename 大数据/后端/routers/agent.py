@@ -1,17 +1,42 @@
 """
 人工客服路由
 """
+import os
 from fastapi import APIRouter, HTTPException, Header, Query
 from database import get_db
 from pydantic import BaseModel
 from typing import Optional
 import hashlib
+import hmac
 
 router = APIRouter()
 
+PASSWORD_PEPPER = os.getenv("PASSWORD_PEPPER", "pineapple-after-sales-2024").encode()
+
 
 def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+    """HMAC-SHA256 密码哈希（带 pepper）"""
+    return hmac.new(PASSWORD_PEPPER, password.encode(), hashlib.sha256).hexdigest()
+
+
+def verify_password(password: str, stored_hash: str) -> bool:
+    """验证密码：优先 HMAC-SHA256，回退纯 SHA-256"""
+    if hmac.new(PASSWORD_PEPPER, password.encode(), hashlib.sha256).hexdigest() == stored_hash:
+        return True
+    if hashlib.sha256(password.encode()).hexdigest() == stored_hash:
+        return True
+    return False
+
+
+def upgrade_password_if_needed(db, agent_id: int, password: str, stored_hash: str):
+    """如果密码是旧格式，自动升级为 HMAC-SHA256"""
+    new_hash = hash_password(password)
+    if stored_hash != new_hash:
+        db.execute(
+            "UPDATE agents SET password_hash = %s WHERE id = %s",
+            (new_hash, agent_id),
+        )
+        db.commit()
 
 
 class AgentLoginRequest(BaseModel):
@@ -31,8 +56,11 @@ def agent_login(req: AgentLoginRequest):
         if not agent:
             raise HTTPException(status_code=404, detail="客服账号不存在")
 
-        if hash_password(req.password) != agent["password_hash"]:
+        if not verify_password(req.password, agent["password_hash"]):
             raise HTTPException(status_code=401, detail="密码错误")
+
+        # 自动升级旧格式密码
+        upgrade_password_if_needed(db, agent["id"], req.password, agent["password_hash"])
 
         # 更新状态为在线
         db.execute(

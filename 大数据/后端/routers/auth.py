@@ -1,19 +1,48 @@
 """
 用户认证路由
 """
+import os
 from fastapi import APIRouter, HTTPException, Header, Query
 from database import get_db
 from models import UserLoginRequest, UserRegisterRequest
 from typing import Optional
 import uuid
 import hashlib
+import hmac
 
 router = APIRouter()
 
+PASSWORD_PEPPER = os.getenv("PASSWORD_PEPPER", "pineapple-after-sales-2024").encode()
+
 
 def hash_password(password: str) -> str:
-    """简单密码哈希"""
+    """HMAC-SHA256 密码哈希（带 pepper）"""
+    return hmac.new(PASSWORD_PEPPER, password.encode(), hashlib.sha256).hexdigest()
+
+
+def hash_password_old(password: str) -> str:
+    """旧版纯 SHA-256 哈希（向后兼容）"""
     return hashlib.sha256(password.encode()).hexdigest()
+
+
+def verify_password(password: str, stored_hash: str) -> bool:
+    """验证密码：优先 HMAC-SHA256，回退纯 SHA-256"""
+    if hmac.new(PASSWORD_PEPPER, password.encode(), hashlib.sha256).hexdigest() == stored_hash:
+        return True
+    if hashlib.sha256(password.encode()).hexdigest() == stored_hash:
+        return True
+    return False
+
+
+def upgrade_password_if_needed(db, user_id: int, password: str, stored_hash: str):
+    """如果密码是旧格式，自动升级为 HMAC-SHA256"""
+    new_hash = hash_password(password)
+    if stored_hash != new_hash:
+        db.execute(
+            "UPDATE users SET password_hash = %s WHERE id = %s",
+            (new_hash, user_id),
+        )
+        db.commit()
 
 
 def _extract_token(
@@ -96,8 +125,11 @@ def login(req: UserLoginRequest):
         if not user:
             raise HTTPException(status_code=404, detail="用户不存在，请先注册")
 
-        if hash_password(req.password) != user["password_hash"]:
+        if not verify_password(req.password, user["password_hash"]):
             raise HTTPException(status_code=401, detail="密码错误")
+
+        # 自动升级旧格式密码
+        upgrade_password_if_needed(db, user["id"], req.password, user["password_hash"])
 
         token = str(uuid.uuid4())
         db.execute(
