@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- History: Styled history cards (SUSE-OAA-APP style) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_background">
+
+    <!-- Top bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:background="@color/electric_blue"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+
+        <TextView android:id="@+id/btn_back"
+            android:layout_width="48dp" android:layout_height="36dp"
+            android:gravity="center" android:text="← 返回"
+            android:textColor="@color/text_white" android:textSize="14sp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:text="对话历史"
+            android:textColor="@color/text_white" android:textSize="18sp"
+            android:textStyle="bold" android:gravity="center" />
+
+        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" />
+
+        <TextView android:id="@+id/btn_clear_all"
+            android:layout_width="wrap_content" android:layout_height="36dp"
+            android:gravity="center" android:text="清除全部"
+            android:textColor="@color/text_white" android:textSize="13sp"
+            android:paddingHorizontal="12dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+    </LinearLayout>
+
+    <!-- Empty state -->
+    <TextView android:id="@+id/tv_empty"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:text="暂无对话记录" android:textColor="@color/ink_grey"
+        android:textSize="15sp" android:gravity="center" android:visibility="gone" />
+
+    <!-- History list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_history"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:clipToPadding="false" />
+</LinearLayout>
